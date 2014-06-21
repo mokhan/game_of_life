@@ -6,6 +6,12 @@ class World
   def neighbors_for(cell)
     @cells.find_all { |x| cell.neighbor?(x) }
   end
+
+  def begin
+    @cells.each do |cell|
+      cell.spawn(self)
+    end
+  end
 end
 
 describe World do
@@ -28,6 +34,16 @@ describe World do
 
     it "does not return cells that are not neighbors" do
       expect(subject.neighbors_for(cell)).to_not include(other_cell)
+    end
+  end
+
+  context "begin" do
+    subject { World.new([cell]) }
+    let(:cell) { double(spawn: true) }
+
+    it "visits each cell" do
+      subject.begin
+      expect(cell).to have_received(:spawn).with(subject)
     end
   end
 end
