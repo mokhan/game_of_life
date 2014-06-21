@@ -1,0 +1,159 @@
+class Cell
+  attr_accessor :x, :y
+  def initialize(populated: false)
+    @populated = populated
+  end
+
+  def spawn(neighbors)
+    populated_neighbors = neighbors.find_all { |x| x.populated? }
+    if populated?
+      Cell.new(populated: (2...4).include?(populated_neighbors.count))
+    else
+      Cell.new(populated: populated_neighbors.count == 3)
+    end
+  end
+
+  def neighbor?(other_cell)
+    if matches_x?(other_cell) && one_cell_away(other_cell.y - self.y)
+      return true
+    elsif matches_y?(other_cell) && one_cell_away(other_cell.x - self.x)
+      return true
+    end
+    false
+  end
+
+  def populated?
+    @populated
+  end
+
+  private
+
+  def matches_x?(other_cell)
+    other_cell.x == x
+  end
+
+  def matches_y?(other_cell)
+    other_cell.y == y
+  end
+
+  def one_cell_away(difference)
+    difference.abs == 1
+  end
+end
+
+describe Cell do
+  let(:populated_neighbor) { Cell.new(populated: true) }
+  let(:unpopulated_neighbor) { Cell.new(populated: false) }
+
+  context "when populated" do
+    subject { Cell.new(populated: true) }
+
+    it "is populated at creation" do
+      expect(subject.populated?).to be_truthy
+    end
+
+    context "when it has a single populated neighbor" do
+      let(:neighbors) { [populated_neighbor, unpopulated_neighbor] }
+
+      it "dies of isolation" do
+        expect(subject.spawn(neighbors)).to_not be_populated
+      end
+    end
+
+    context 'when it has two populated neighbors' do
+      let(:neighbors) { [populated_neighbor] * 2 }
+
+      it "remains populated" do
+        expect(subject.spawn(neighbors)).to be_populated
+      end
+    end
+
+    context 'when it has three populated neighbors' do
+      let(:neighbors) { [populated_neighbor] * 3 }
+
+      it "remains populated" do
+        expect(subject.spawn(neighbors)).to be_populated
+      end
+    end
+
+    context 'when it has more than three neighbors' do
+      let(:neighbors) { [populated_neighbor] * 4 }
+
+      it "becomes unpopulated" do
+        expect(subject.spawn(neighbors)).to_not be_populated
+      end
+    end
+  end
+
+  context "when unpopulated" do
+    subject { Cell.new(populated: false) }
+    let(:populated_neighbors) { [populated_neighbor] * 2 }
+    let(:neighbors) { populated_neighbors + [unpopulated_neighbor] }
+
+    context "when it has two populated neighbors" do
+      it "remains unpopulated" do
+        expect(subject.spawn(neighbors)).to_not be_populated
+      end
+    end
+  end
+
+  describe "neighbor?" do
+    subject { create_cell(3, 3) }
+
+    context "when other cell is one cell north" do
+      it "returns true" do
+        expect(subject.neighbor?(create_cell(3, 4))).to be_truthy
+      end
+    end
+
+    context "when the other cell is two cells north" do
+      it "returns false" do
+        expect(subject.neighbor?(create_cell(3, 5))).to be_falsey
+      end
+    end
+
+    context "when other cell is one cell east" do
+      it "returns true" do
+        expect(subject.neighbor?(create_cell(4, 3))).to be_truthy
+      end
+    end
+
+    context "when other cell is two cells to the east" do
+      it "returns true" do
+        expect(subject.neighbor?(create_cell(5, 3))).to be_falsey
+      end
+    end
+
+    context "when the other cell is one cell to the south" do
+      it "return true" do
+        expect(subject.neighbor?(create_cell(3, 2))).to be_truthy
+      end
+    end
+
+    context "when the other cell is two cells to the south" do
+      it "returns false" do
+        expect(subject.neighbor?(create_cell(3, 1))).to be_falsey
+      end
+    end
+
+    context "when the other cell is one cell to the west" do
+      it "returns true" do
+        expect(subject.neighbor?(create_cell(2, 3))).to be_truthy
+      end
+    end
+
+    context "when the other cell is two cells to the west" do
+      it "returns true" do
+        expect(subject.neighbor?(create_cell(1, 3))).to be_falsey
+      end
+    end
+
+    def create_cell(x, y)
+      Cell.new.tap do |cell|
+        cell.x = x
+        cell.y = y
+      end
+    end
+  end
+end
+
