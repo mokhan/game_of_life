@@ -4,8 +4,8 @@ class Cell
     @populated = populated
   end
 
-  def spawn(neighbors)
-    populated_neighbors = neighbors.find_all { |x| x.populated? }
+  def spawn(world)
+    populated_neighbors = world.neighbors_for(self).find_all { |x| x.populated? }
     if populated?
       Cell.new(populated: (2...4).include?(populated_neighbors.count))
     else
@@ -44,6 +44,7 @@ end
 describe Cell do
   let(:populated_neighbor) { Cell.new(populated: true) }
   let(:unpopulated_neighbor) { Cell.new(populated: false) }
+  let(:world) { double }
 
   context "when populated" do
     subject { Cell.new(populated: true) }
@@ -56,7 +57,8 @@ describe Cell do
       let(:neighbors) { [populated_neighbor, unpopulated_neighbor] }
 
       it "dies of isolation" do
-        expect(subject.spawn(neighbors)).to_not be_populated
+        world.stub(:neighbors_for).with(subject).and_return(neighbors)
+        expect(subject.spawn(world)).to_not be_populated
       end
     end
 
@@ -64,7 +66,8 @@ describe Cell do
       let(:neighbors) { [populated_neighbor] * 2 }
 
       it "remains populated" do
-        expect(subject.spawn(neighbors)).to be_populated
+        world.stub(:neighbors_for).with(subject).and_return(neighbors)
+        expect(subject.spawn(world)).to be_populated
       end
     end
 
@@ -72,7 +75,8 @@ describe Cell do
       let(:neighbors) { [populated_neighbor] * 3 }
 
       it "remains populated" do
-        expect(subject.spawn(neighbors)).to be_populated
+        world.stub(:neighbors_for).with(subject).and_return(neighbors)
+        expect(subject.spawn(world)).to be_populated
       end
     end
 
@@ -80,7 +84,8 @@ describe Cell do
       let(:neighbors) { [populated_neighbor] * 4 }
 
       it "becomes unpopulated" do
-        expect(subject.spawn(neighbors)).to_not be_populated
+        world.stub(:neighbors_for).with(subject).and_return(neighbors)
+        expect(subject.spawn(world)).to_not be_populated
       end
     end
   end
@@ -92,7 +97,8 @@ describe Cell do
 
     context "when it has two populated neighbors" do
       it "remains unpopulated" do
-        expect(subject.spawn(neighbors)).to_not be_populated
+        world.stub(:neighbors_for).with(subject).and_return(neighbors)
+        expect(subject.spawn(world)).to_not be_populated
       end
     end
   end
