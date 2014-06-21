@@ -1,8 +1,8 @@
 describe World do
   subject { World.new(cells) }
   let(:cells) { [neighbor, other_cell] }
-  let(:neighbor) { Object.new }
-  let(:other_cell) { Object.new }
+  let(:neighbor) { double }
+  let(:other_cell) { double }
 
   context "#neighbors_for" do
     let(:cell) { Object.new }

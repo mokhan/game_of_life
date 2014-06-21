@@ -1,8 +1,9 @@
 class Cell
-  attr_accessor :x, :y
+  attr_reader :x, :y
 
-  def initialize(populated: false)
+  def initialize(populated: false, x: 1, y: 1)
     @populated = populated
+    @x, @y = x, y
   end
 
   def spawn(world)

@@ -112,10 +112,7 @@ describe Cell do
     end
 
     def create_cell(x, y)
-      Cell.new.tap do |cell|
-        cell.x = x
-        cell.y = y
-      end
+      Cell.new(x: x, y: y)
     end
   end
 end
