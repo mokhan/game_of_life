@@ -7,11 +7,10 @@ class Cell
   end
 
   def spawn(world)
-    living_neighbors = world.neighbors_for(self).find_all { |x| x.alive? }
     if alive?
-      Cell.new(alive: (2...4).include?(living_neighbors.count), x: x, y: y)
+      Cell.new(alive: (2...4).include?(living_neighbors_in(world).count), x: x, y: y)
     else
-      Cell.new(alive: living_neighbors.count == 3, x: x, y: y)
+      Cell.new(alive: living_neighbors_in(world).count == 3, x: x, y: y)
     end
   end
 
@@ -26,6 +25,10 @@ class Cell
   end
 
   private
+
+  def living_neighbors_in(world)
+    world.neighbors_for(self).find_all { |x| x.alive? }
+  end
 
   def x?(other_cell)
     other_cell.x == x
