@@ -16,11 +16,8 @@ class Cell
   end
 
   def neighbor?(other_cell)
-    if matches_x?(other_cell) && one_cell_away(other_cell.y - self.y)
-      return true
-    elsif matches_y?(other_cell) && one_cell_away(other_cell.x - self.x)
-      return true
-    end
+    return true if matches_x?(other_cell) && one_cell_away(other_cell.y - self.y)
+    return true if matches_y?(other_cell) && one_cell_away(other_cell.x - self.x)
     false
   end
 
