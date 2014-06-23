@@ -1,4 +1,4 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 $:.unshift('lib')
 require 'gol'
 
