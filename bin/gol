@@ -2,6 +2,6 @@
 $:.unshift('lib')
 require 'gol'
 
-max_x = 3
-max_y = 3
+max_x = 10
+max_y = 10
 Game.new(Printer.new(max_x)).play(max_x, max_y)
