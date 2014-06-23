@@ -9,9 +9,9 @@ class Cell
   def spawn(world)
     populated_neighbors = world.neighbors_for(self).find_all { |x| x.populated? }
     if populated?
-      Cell.new(populated: (2...4).include?(populated_neighbors.count))
+      Cell.new(populated: (2...4).include?(populated_neighbors.count), x: x, y: y)
     else
-      Cell.new(populated: populated_neighbors.count == 3)
+      Cell.new(populated: populated_neighbors.count == 3, x: x, y: y)
     end
   end
 

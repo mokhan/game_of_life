@@ -9,15 +9,17 @@ class World
     @cells.find_all { |x| cell.neighbor?(x) }
   end
 
-  def begin
-    each do |cell|
-      cell.spawn(self)
-    end
+  def next_generation
+    @cells = map { |cell| cell.spawn(self) }
   end
 
   def each
     @cells.each do |cell|
       yield cell
     end
+  end
+
+  def empty?
+    !any? { |x| x.populated? }
   end
 end

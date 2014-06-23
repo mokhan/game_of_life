@@ -5,7 +5,7 @@ describe World do
   let(:other_cell) { double }
 
   context "#neighbors_for" do
-    let(:cell) { Object.new }
+    let(:cell) { Cell.new }
 
     before :each do
       cell.stub(:neighbor?).with(neighbor).and_return(true)
@@ -21,13 +21,31 @@ describe World do
     end
   end
 
-  context "begin" do
+  context "#next_generation" do
     subject { World.new([cell]) }
     let(:cell) { double(spawn: true) }
 
     it "visits each cell" do
-      subject.begin
+      subject.next_generation
       expect(cell).to have_received(:spawn).with(subject)
+    end
+  end
+
+  context "#empty?" do
+    context "when there are no living cells" do
+      it "returns true" do
+        neighbor.stub(:populated?).and_return(false)
+        other_cell.stub(:populated?).and_return(false)
+        expect(subject).to be_empty
+      end
+    end
+
+    context "when there is at least one living cell" do
+      it "returns false" do
+        neighbor.stub(:populated?).and_return(false)
+        other_cell.stub(:populated?).and_return(true)
+        expect(subject).to_not be_empty
+      end
     end
   end
 end
