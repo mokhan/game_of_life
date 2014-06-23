@@ -14,7 +14,7 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require 'gof'
+require 'gol'
 
 RSpec.configure do |config|
 # The settings below are suggested to provide a good initial experience

@@ -1,6 +1,6 @@
 #!/bin/env ruby
 $:.unshift('lib')
-require 'gof'
+require 'gol'
 
 game = Game.new($stdout)
 game.play(3, 3)
