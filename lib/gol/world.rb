@@ -20,6 +20,6 @@ class World
   end
 
   def empty?
-    !any? { |x| x.populated? }
+    !any? { |x| x.alive? }
   end
 end

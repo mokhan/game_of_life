@@ -1,61 +1,61 @@
 describe Cell do
-  let(:populated_neighbor) { Cell.new(populated: true) }
-  let(:unpopulated_neighbor) { Cell.new(populated: false) }
+  let(:living_neighbor) { Cell.new(alive: true) }
+  let(:dead_neighbor) { Cell.new(alive: false) }
   let(:world) { double }
 
-  context "when populated" do
-    subject { Cell.new(populated: true) }
+  context "when alive" do
+    subject { Cell.new(alive: true) }
 
-    it "is populated at creation" do
-      expect(subject.populated?).to be_truthy
+    it "is alive at creation" do
+      expect(subject.alive?).to be_truthy
     end
 
-    context "when it has a single populated neighbor" do
-      let(:neighbors) { [populated_neighbor, unpopulated_neighbor] }
+    context "when it has a single living neighbor" do
+      let(:neighbors) { [living_neighbor, dead_neighbor] }
 
       it "dies of isolation" do
         world.stub(:neighbors_for).with(subject).and_return(neighbors)
-        expect(subject.spawn(world)).to_not be_populated
+        expect(subject.spawn(world)).to_not be_alive
       end
     end
 
-    context 'when it has two populated neighbors' do
-      let(:neighbors) { [populated_neighbor] * 2 }
+    context 'when it has two living neighbors' do
+      let(:neighbors) { [living_neighbor] * 2 }
 
-      it "remains populated" do
+      it "remains living" do
         world.stub(:neighbors_for).with(subject).and_return(neighbors)
-        expect(subject.spawn(world)).to be_populated
+        expect(subject.spawn(world)).to be_alive
       end
     end
 
-    context 'when it has three populated neighbors' do
-      let(:neighbors) { [populated_neighbor] * 3 }
+    context 'when it has three living neighbors' do
+      let(:neighbors) { [living_neighbor] * 3 }
 
-      it "remains populated" do
+      it "remains living" do
         world.stub(:neighbors_for).with(subject).and_return(neighbors)
-        expect(subject.spawn(world)).to be_populated
+        expect(subject.spawn(world)).to be_alive
       end
     end
 
     context 'when it has more than three neighbors' do
-      let(:neighbors) { [populated_neighbor] * 4 }
+      let(:neighbors) { [living_neighbor] * 4 }
 
-      it "becomes unpopulated" do
+      it "dies" do
         world.stub(:neighbors_for).with(subject).and_return(neighbors)
-        expect(subject.spawn(world)).to_not be_populated
+        expect(subject.spawn(world)).to_not be_alive
       end
     end
   end
 
-  context "when unpopulated" do
-    subject { Cell.new(populated: false) }
-    let(:populated_neighbors) { [populated_neighbor] * 2 }
-    let(:neighbors) { populated_neighbors + [unpopulated_neighbor] }
+  context "when dead" do
+    subject { Cell.new(alive: false) }
+    let(:living_neighbors) { [living_neighbor] * 2 }
+    let(:neighbors) { living_neighbors + [dead_neighbor] }
 
-    context "when it has two populated neighbors" do
-      it "remains unpopulated" do
+    context "when it has two living neighbors" do
+      it "remains dead" do
         world.stub(:neighbors_for).with(subject).and_return(neighbors)
-        expect(subject.spawn(world)).to_not be_populated
+        expect(subject.spawn(world)).to_not be_alive
       end
     end
   end

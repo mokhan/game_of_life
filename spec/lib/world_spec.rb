@@ -34,16 +34,16 @@ describe World do
   context "#empty?" do
     context "when there are no living cells" do
       it "returns true" do
-        neighbor.stub(:populated?).and_return(false)
-        other_cell.stub(:populated?).and_return(false)
+        neighbor.stub(:alive?).and_return(false)
+        other_cell.stub(:alive?).and_return(false)
         expect(subject).to be_empty
       end
     end
 
     context "when there is at least one living cell" do
       it "returns false" do
-        neighbor.stub(:populated?).and_return(false)
-        other_cell.stub(:populated?).and_return(true)
+        neighbor.stub(:alive?).and_return(false)
+        other_cell.stub(:alive?).and_return(true)
         expect(subject).to_not be_empty
       end
     end
