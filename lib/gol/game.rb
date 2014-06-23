@@ -6,7 +6,7 @@ class Game
   def play(max_x, max_y)
     world = World.new(create_cells(max_x, max_y))
     until world.empty? do
-      @printer.print(world)
+      @printer.display(world)
       world.next_generation!
     end
   end
