@@ -24,6 +24,10 @@ class Cell
     false
   end
 
+  def print
+    populated? ? "X" : " "
+  end
+
   def populated?
     @populated
   end

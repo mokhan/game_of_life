@@ -2,10 +2,9 @@ describe Game do
   subject { Game.new(printer) }
   let(:printer) { double }
 
-  xcontext "#start" do
+  context "#start" do
     it "prints the output of the world" do
-      subject.play(3, 3)
-      expect(world).to have_received(:print_each_using).with(printer)
+      expect(subject.play(3, 3)).to eql(new_world)
     end
   end
 

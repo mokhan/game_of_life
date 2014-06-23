@@ -1,4 +1,6 @@
 class World
+  include Enumerable
+
   def initialize(cells)
     @cells = cells
   end
@@ -8,8 +10,14 @@ class World
   end
 
   def begin
-    @cells.each do |cell|
+    each do |cell|
       cell.spawn(self)
+    end
+  end
+
+  def each
+    @cells.each do |cell|
+      yield cell
     end
   end
 end
