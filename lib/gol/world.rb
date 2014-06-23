@@ -9,7 +9,7 @@ class World
     @cells.find_all { |x| cell.neighbor?(x) }
   end
 
-  def next_generation
+  def next_generation!
     @cells = map { |cell| cell.spawn(self) }
   end
 

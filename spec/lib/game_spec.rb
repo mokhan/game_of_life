@@ -2,12 +2,6 @@ describe Game do
   subject { Game.new(printer) }
   let(:printer) { double }
 
-  context "#start" do
-    it "prints the output of the world" do
-      expect(subject.play(3, 3)).to eql(new_world)
-    end
-  end
-
   context "#create_cells" do
     context "for a 2x2 grid" do
       let(:results) { subject.create_cells(2, 2) }

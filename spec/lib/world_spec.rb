@@ -21,12 +21,12 @@ describe World do
     end
   end
 
-  context "#next_generation" do
+  context "#next_generation!" do
     subject { World.new([cell]) }
     let(:cell) { double(spawn: true) }
 
     it "visits each cell" do
-      subject.next_generation
+      subject.next_generation!
       expect(cell).to have_received(:spawn).with(subject)
     end
   end

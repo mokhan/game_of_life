@@ -2,5 +2,6 @@
 $:.unshift('lib')
 require 'gol'
 
-game = Game.new($stdout)
-game.play(3, 3)
+max_x = 3
+max_y = 3
+Game.new(Printer.new(max_x)).play(max_x, max_y)
